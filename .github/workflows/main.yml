@@ -1,22 +1,28 @@
-name: Master Bot
+name: Run Script
 
 on:
-  # รัน workflow นี้เมื่อมีการ push code ไปยัง branch "main"
   push:
     branches:
       - main
 
 jobs:
-  switch_rooms:
+  run_script:
     runs-on: self-hosted
+
     steps:
-      # ติดตั้ง Python
-      - uses: actions/setup-python@v3
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v3
         with:
-          python-version: '3.9'
+          python-version: '3'
 
-      # ดาวน์โหลด dependencies
-      - run: pip install requests
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install requests
+          # ติดตั้ง dependencies อื่นๆ ที่ต้องการ
 
-      # รันโค้ดสลับห้อง
-      - run: python script.py
+      - name: Run script
+        run: python script.py
